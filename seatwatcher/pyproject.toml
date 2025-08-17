@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=65", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "seatwatcher"
+version = "0.1.0"
+description = "Configurable seat availability watcher with notifications"
+authors = [{ name = "SeatWatcher Maintainers" }]
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = []
+
+[tool.setuptools]
+package-dir = {"" = "."}
+packages = ["seatwatcher", "seatwatcher.utils", "seatwatcher.notifiers", "seatwatcher.providers"]
