@@ -1,0 +1,8 @@
+This directory contains Alembic migration scripts for SeatWatcher.
+Generate new revisions via:
+
+  alembic -c alembic.ini revision -m "describe change" --autogenerate
+
+Apply latest:
+
+  alembic -c alembic.ini upgrade head

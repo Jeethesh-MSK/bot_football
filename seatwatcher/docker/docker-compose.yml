@@ -1,0 +1,33 @@
+version: '3.9'
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: seatwatcher
+      POSTGRES_PASSWORD: seatwatcher
+      POSTGRES_DB: seatwatcher
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+  mailhog:
+    image: mailhog/mailhog:latest
+    ports:
+      - "1025:1025"  # smtp
+      - "8025:8025"  # web ui
+  app:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    environment:
+      DB_URL: postgresql+psycopg2://seatwatcher:seatwatcher@db:5432/seatwatcher
+      SMTP_HOST: mailhog
+      SMTP_PORT: 1025
+      SMTP_USE_TLS: "false"
+      SMTP_USE_STARTTLS: "false"
+    depends_on:
+      - db
+      - mailhog
+    command: ["--config", "configs/seatwatcher.yaml", "run"]
+volumes:
+  db_data:

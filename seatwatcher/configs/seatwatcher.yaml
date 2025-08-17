@@ -1,0 +1,42 @@
+app:
+  timezone: "UTC"
+  log_level: "INFO"
+
+database:
+  # For local development use SQLite; in production, set DB_URL env to Postgres.
+  url: "${DB_URL:-sqlite:////workspace/seatwatcher/data/seatwatcher.db}"
+
+provider:
+  # Switch to http_json for a real API. See README for details.
+  type: "dummy"
+  dummy:
+    seed: 42
+    min_seats: 0
+    max_seats: 10
+
+# Define notifiers by name; monitors refer to these names
+notifiers:
+  console:
+    type: "console"
+  slack:
+    type: "slack"
+    webhook_url_env: "SLACK_WEBHOOK_URL"
+  email_main:
+    type: "email"
+    from_email: "watcher@example.com"
+    to_emails: ["ops@example.com"]
+    smtp_host: "${SMTP_HOST:-localhost}"
+    smtp_port: ${SMTP_PORT:-587}
+    username_env: "SMTP_USER"
+    password_env: "SMTP_PASSWORD"
+    password_file_env: "SMTP_PASSWORD_FILE"
+    use_tls: ${SMTP_USE_TLS:-true}
+    use_starttls: ${SMTP_USE_STARTTLS:-true}
+
+# Each monitor configures a match, threshold, poll rate, and which channels to notify
+monitors:
+  - name: "Example Match"
+    match_id: "MATCH-001"
+    seat_threshold_min: 2
+    poll_interval_seconds: 5
+    channels: ["console"]
